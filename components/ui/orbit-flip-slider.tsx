@@ -230,7 +230,7 @@ const OrbitFlipSlider = ({
           gsap.set(card, { x: box.x, y: box.y, xPercent: -50, yPercent: -50, width: box.width, height: box.height, zIndex: box.zIndex });
         });
       };
-      if (!animate || reducedMotion) { commit(); return; }
+      if (!animate) { commit(); return; }
       const state = Flip.getState(cards);
       commit();
       isFlipAnimatingRef.current = true;
@@ -273,7 +273,7 @@ const OrbitFlipSlider = ({
     applyLayout(mode, true);
   };
   useEffect(() => {
-    if (!rotate || reducedMotion) return;
+    if (!rotate) return;
     let rafId: number;
     let lastTime = performance.now();
     const tick = (now: number) => {
@@ -289,7 +289,7 @@ const OrbitFlipSlider = ({
   const handleCardEnter = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       hoveredCardCountRef.current += 1;
-      if (reducedMotion || !enableHoverMovement || window.innerWidth < MOBILE_BREAKPOINT) return;
+      if (!enableHoverMovement || window.innerWidth < MOBILE_BREAKPOINT) return;
       const card = e.currentTarget;
       const inner = card.querySelector<HTMLElement>(".orbit-flip-slider-card-inner");
       if (!inner) return;
@@ -302,7 +302,7 @@ const OrbitFlipSlider = ({
   const handleCardLeave = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       hoveredCardCountRef.current = Math.max(0, hoveredCardCountRef.current - 1);
-      if (reducedMotion || !enableHoverMovement || window.innerWidth < MOBILE_BREAKPOINT) return;
+      if (!enableHoverMovement || window.innerWidth < MOBILE_BREAKPOINT) return;
       const card = e.currentTarget;
       const inner = card.querySelector<HTMLElement>(".orbit-flip-slider-card-inner");
       if (!inner) return;
