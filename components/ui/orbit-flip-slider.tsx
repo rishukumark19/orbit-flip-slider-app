@@ -156,7 +156,7 @@ const buildLayout = (mode: OrbitFlipSliderMode, count: number, containerW: numbe
 };
 
 const DEFAULT_IMAGES = [
-  "https://images.unsplash.com/photo-1707343843598-d8614832b82c?w=400&h=600&fit=crop",
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=400&h=600&fit=crop",
   "https://images.unsplash.com/photo-1682687982501-1e58ab814714?w=400&h=600&fit=crop",
   "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=600&fit=crop",
   "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=400&h=600&fit=crop",
@@ -230,7 +230,7 @@ const OrbitFlipSlider = ({
           gsap.set(card, { x: box.x, y: box.y, xPercent: -50, yPercent: -50, width: box.width, height: box.height, zIndex: box.zIndex });
         });
       };
-      if (!animate) { commit(); return; }
+      if (!animate || reducedMotion) { commit(); return; }
       const state = Flip.getState(cards);
       commit();
       isFlipAnimatingRef.current = true;
@@ -273,7 +273,7 @@ const OrbitFlipSlider = ({
     applyLayout(mode, true);
   };
   useEffect(() => {
-    if (!rotate) return;
+    if (!rotate || reducedMotion) return;
     let rafId: number;
     let lastTime = performance.now();
     const tick = (now: number) => {
@@ -289,7 +289,7 @@ const OrbitFlipSlider = ({
   const handleCardEnter = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       hoveredCardCountRef.current += 1;
-      if (!enableHoverMovement || window.innerWidth < MOBILE_BREAKPOINT) return;
+      if (reducedMotion || !enableHoverMovement || window.innerWidth < MOBILE_BREAKPOINT) return;
       const card = e.currentTarget;
       const inner = card.querySelector<HTMLElement>(".orbit-flip-slider-card-inner");
       if (!inner) return;
@@ -302,7 +302,7 @@ const OrbitFlipSlider = ({
   const handleCardLeave = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       hoveredCardCountRef.current = Math.max(0, hoveredCardCountRef.current - 1);
-      if (!enableHoverMovement || window.innerWidth < MOBILE_BREAKPOINT) return;
+      if (reducedMotion || !enableHoverMovement || window.innerWidth < MOBILE_BREAKPOINT) return;
       const card = e.currentTarget;
       const inner = card.querySelector<HTMLElement>(".orbit-flip-slider-card-inner");
       if (!inner) return;
